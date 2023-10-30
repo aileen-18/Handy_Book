@@ -5,13 +5,10 @@
         android:icon="@drawable/home_book"
         android:title="Home" />
     <item
-        android:id="@+id/search_books"
+        android:id="@+id/search"
         android:icon="@drawable/search"
         android:title="Search" />
-    <item
-        android:id="@+id/feather"
-        android:icon="@drawable/feather"
-        android:title="Feather" />
+
     <item
         android:id="@+id/saved"
         android:icon="@drawable/saved"

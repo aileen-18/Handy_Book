@@ -6,4 +6,8 @@
     </style>
 
     <style name="Theme.HandyBook" parent="Base.Theme.HandyBook" />
+    <style name="MontserratSemiBoldTextAppearance">
+        <item name="android:fontFamily">@font/montserrat_semi_bold</item>
+        <item name="android:textSize">20sp</item>
+    </style>
 </resources>

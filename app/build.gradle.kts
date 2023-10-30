@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "uz.itschool.handybook"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "uz.itschool.handybook"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -59,4 +59,9 @@ dependencies {
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 
     implementation("io.coil-kt:coil:2.4.0")
+
+    implementation( "com.airbnb.android:lottie:4.1.0")
+
+
+
 }
