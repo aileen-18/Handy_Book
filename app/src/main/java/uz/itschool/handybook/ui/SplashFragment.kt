@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import uz.itschool.handybook.R
 import uz.itschool.handybook.databinding.FragmentSplashBinding
+import uz.itschool.handybook.shared_pref.SharedPrefHelper
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -38,16 +39,17 @@ class SplashFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-   val binding = FragmentSplashBinding.inflate(inflater,container,false)
+        val binding = FragmentSplashBinding.inflate(inflater, container, false)
+
         Handler(Looper.getMainLooper()).postDelayed({
-            findNavController().navigate(R.id.action_splashFragment_to_registrationFragment)
-        }, 3000)
-
-
-
+            val shared = SharedPrefHelper.getInstance(requireContext())
+            if (shared.getUser() == null) findNavController().navigate(R.id.action_splashFragment_to_registrationFragment)
+            else findNavController().navigate(R.id.action_splashFragment_to_mainFragment)
+        }, 4000)
 
         return binding.root
     }
+
 
     companion object {
         /**
