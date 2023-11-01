@@ -60,7 +60,7 @@ class SignInFragment : Fragment() {
 
         binding.signupBtn.setOnClickListener {
             if (binding.inputUsername.text.toString() == "") {
-                Toast.makeText(requireContext(), "Foydalnuvchi nomini kiriting", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Foydalanuvchi nomini kiriting", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             if (binding.inputPassword.text.toString() == "") {
@@ -74,12 +74,16 @@ class SignInFragment : Fragment() {
                 password = binding.inputPassword.text.toString().trim(),
                 email = binding.inputEmail.text.toString()
             )
-            if (!validate(signUp)) return@setOnClickListener
+            if (!check(signUp)) return@setOnClickListener
 
             api.signup(signUp).enqueue(object : Callback<User> {
                 override fun onResponse(call: Call<User>, response: Response<User>) {
                     Log.d("TAG", "$response")
-
+                    if (response.code() == 422){
+                        Toast.makeText(requireContext(), "Bu username band", Toast.LENGTH_SHORT).show()
+                        binding.inputUsername.setText("")
+                        return
+                    }
                     if (!response.isSuccessful) {
                         Toast.makeText(requireContext(), "Ro'yhatdan o'tishda xatolik", Toast.LENGTH_SHORT).show()
                         return
@@ -100,43 +104,43 @@ class SignInFragment : Fragment() {
         return binding.root
     }
 
-    private fun validate(signUp: SignUp): Boolean {
-        var out = true
+    private fun check(signUp: SignUp): Boolean {
+        var pass = true
         if (binding.inputName.text.toString() == "") {
             binding.incorrectName.visibility = View.VISIBLE
-            out = false
+            pass = false
         } else binding.incorrectName.visibility = View.GONE
 
         if (binding.inputSurname.text.toString() == "") {
             binding.incorrectSurname.visibility = View.VISIBLE
-            out = false
+            pass = false
         } else binding.incorrectSurname.visibility = View.GONE
 
         if (signUp.username.length < 5) {
             binding.incorrectUsername.visibility = View.VISIBLE
-            out = false
+            pass = false
         } else binding.incorrectUsername.visibility = View.GONE
 
         if (!signUp.email.contains("@")) {
             binding.incorrectEmail.visibility = View.VISIBLE
-            out = false
+            pass = false
         } else binding.incorrectEmail.visibility = View.GONE
 
         if (signUp.password.length < 8) {
             binding.incorrectPassword.visibility = View.VISIBLE
             binding.inputPassword.setText("")
             binding.incorrectRepeatPassword.setText("")
-            out = false
+            pass = false
         } else binding.incorrectPassword.visibility = View.GONE
 
-        if (signUp.password.length >= 8 && binding.incorrectRepeatPassword.text.toString()
+        if (signUp.password.length >= 8 && binding.inputPassword2.text.toString()
                 .trim() != signUp.password
         ) {
             binding.incorrectRepeatPassword.visibility = View.GONE
             binding.inputPassword2.setText("")
-            out = false
-        }
-        return out
+            pass = false
+        }else binding.incorrectRepeatPassword.visibility = View.GONE
+        return pass
     }
 
     companion object {
