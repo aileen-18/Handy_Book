@@ -61,10 +61,26 @@
         <action
             android:id="@+id/action_mainFragment_to_bookFragment"
             app:destination="@id/bookFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_readingFragment"
+            app:destination="@id/readingFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_personalFragment"
+            app:destination="@id/personalFragment" />
     </fragment>
     <fragment
         android:id="@+id/bookFragment"
         android:name="uz.itschool.handybook.ui.BookFragment"
         android:label="fragment_book"
         tools:layout="@layout/fragment_book" />
+    <fragment
+        android:id="@+id/readingFragment"
+        android:name="uz.itschool.handybook.ui.ReadingFragment"
+        android:label="fragment_reading"
+        tools:layout="@layout/fragment_reading" />
+    <fragment
+        android:id="@+id/personalFragment"
+        android:name="uz.itschool.handybook.ui.PersonalFragment"
+        android:label="fragment_personal"
+        tools:layout="@layout/fragment_personal" />
 </navigation>

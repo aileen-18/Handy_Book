@@ -90,6 +90,8 @@ class SignInFragment : Fragment() {
                     }
                     val user = response.body()!!
                     shared_pref.setUser(user)
+                    val bundle = Bundle()
+                    bundle.putSerializable("user", user)
                     findNavController().navigate(R.id.action_signInFragment_to_mainFragment)
                 }
 

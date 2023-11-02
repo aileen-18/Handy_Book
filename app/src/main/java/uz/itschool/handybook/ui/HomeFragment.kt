@@ -48,7 +48,8 @@ class HomeFragment : Fragment() {
     private lateinit var shared: SharedPrefHelper
     private lateinit var adapter: BooksAdapter
     private var allBooks = listOf<Book>()
-
+    lateinit var currentcategory: String
+    lateinit var categories :MutableList<Category>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,11 +64,8 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-
-
-
-
-
+      categories = mutableListOf<Category>()
+        currentcategory = ""
 
 
         shared = SharedPrefHelper.getInstance(requireContext())
@@ -83,49 +81,104 @@ class HomeFragment : Fragment() {
 
 
 
+
        getAllBooks()
         setMainBook()
         SetCategory(requireContext())
+
         return binding.root
     }
 
+
     private fun SetCategory(context: Context) {
-        binding.rvCategory.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        api.getCategories().enqueue(object : Callback<List<Category>>{
+        api.getCategories().enqueue(object : Callback<List<Category>> {
             override fun onResponse(
                 call: Call<List<Category>>,
                 response: Response<List<Category>>
             ) {
-                if (!response.isSuccessful) return
-                val categories = response.body()!!
-                binding.rvCategory.adapter = CategoryAdapter(categories,context,
-                  object:CategoryAdapter.CategoryClicked{
-                        override fun onClick(category: String) {
+                for (i in 0 until response.body()!!.size) {
+                    categories.add(response.body()!![i])
+                }
+                if (categories.isNotEmpty()) {
+                    val adapter = CategoryAdapter(categories, context,
+                            object : CategoryAdapter.CategoryClicked {
+                                override fun onClick(category: String) {
+                                    currentcategory = category
+                                    if (!response.body()!!.contains(Category(category))){
+                                        api.getBooks().enqueue(object : Callback<List<Book>>{
+                                            override fun onResponse(
+                                                call: Call<List<Book>>,
+                                                response: Response<List<Book>>
+                                            ) {
+                                                binding.rvAllBooks.visibility = View.VISIBLE
+                                                binding.homeNothingFound.visibility = View.GONE
+                                                binding.rvAllBooks.adapter = BooksAdapter(response.body()!!, object : BooksAdapter.BookCLicked{
+                                                    override fun OnClick(book: Book) {
+                                                        val bundle = Bundle()
+                                                        bundle.putSerializable("book", book)
+                                           findNavController().navigate(R.id.action_mainFragment_to_bookFragment,bundle)
+                                                    }
+                                                })
+                                                Log.d(TAG, "onResponse: $category, ${response.body()},")
+                                            }
 
-                        }
+                                            override fun onFailure(
+                                                call: Call<List<Book>>,
+                                                t: Throwable
+                                            ) {
+                                                Log.d(TAG, "onFailure: $t")
+                                            }
 
-                    })
+                                        })
+                                    }else{
+                                        api.getBookByCategory(category).enqueue(object : Callback<List<Book>>{
+                                            override fun onResponse(
+                                                call: Call<List<Book>>,
+                                                response: Response<List<Book>>
+                                            ) {
+                                                if (response.body()?.isNotEmpty()!!){
+                                                    binding.rvAllBooks.visibility = View.VISIBLE
+                                                    binding.homeNothingFound.visibility = View.GONE
+                                                    binding.rvAllBooks.adapter = BooksAdapter(response.body()!!, object : BooksAdapter.BookCLicked{
+                                                        override fun OnClick(book: Book) {
+                                                            val bundle = Bundle()
+                                                            bundle.putSerializable("book", book)
+                                                            findNavController().navigate(R.id.action_mainFragment_to_bookFragment,bundle)
+                                                        }
+                                                    })
+                                                }else{
+                                                    binding.rvAllBooks.visibility = View.GONE
+                                                    binding.homeNothingFound.visibility = View.VISIBLE
+                                                }
+                                                Log.d(TAG, "onResponse: $category,  ${response.body()}")
+                                            }
+
+                                            override fun onFailure(
+                                                call: Call<List<Book>>,
+                                                t: Throwable
+                                            ) {
+                                                Log.d(TAG, "onFailure: $t")
+                                            }
+
+                                        })
+                                    }
+
+                                }
+                            })
+
+                    val manager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                    binding.rvCategory.layoutManager = manager
+                    binding.rvCategory.adapter = adapter
+                }
             }
 
             override fun onFailure(call: Call<List<Category>>, t: Throwable) {
-                Log.d("TAG", "$t")
+                Log.d(TAG, "onFailure: $t")
             }
         })
     }
 
-    private fun setCategoryChanger(category: String) {
-        api.getBookByCategory(category).enqueue(object : Callback<List<Book>>{
-            override fun onResponse(call: Call<List<Book>>, response: Response<List<Book>>) {
-                if (!response.isSuccessful) return
-                val books = response.body()!!
-                setAllBooks(books)
-            }
 
-            override fun onFailure(call: Call<List<Book>>, t: Throwable) {
-                Log.d("TAG", "$t")
-            }
-        })
-    }
 
     private fun setMainBook() {
         api.getMainBook().enqueue(object : Callback<Book>{
@@ -150,7 +203,7 @@ class HomeFragment : Fragment() {
         api.getBooks().enqueue(object : Callback<List<Book>>{
             override fun onResponse(call: Call<List<Book>>, response: Response<List<Book>>) {
                 val books = response.body()!!
-                Log.d(TAG, "onResponse: $books")
+
 
                 binding.rvAllBooks.adapter = BooksAdapter(books, object:BooksAdapter.BookCLicked{
                     override fun OnClick(book: Book) {

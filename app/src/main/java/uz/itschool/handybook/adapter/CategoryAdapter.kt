@@ -11,7 +11,7 @@ import com.google.android.material.card.MaterialCardView
 import uz.itschool.handybook.R
 import uz.itschool.handybook.model.Category
 
-class CategoryAdapter (private val categories: List<Category>,
+class CategoryAdapter (private val categories: MutableList<Category>,
 private var context: Context,
 private val onClick: CategoryClicked
 ) : RecyclerView.Adapter<CategoryAdapter.MyHolder>() {

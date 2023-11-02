@@ -33,7 +33,9 @@ class SharedPrefHelper private constructor(context: Context) {
         if (data == "") return null
         val typeToken = object : TypeToken<User>() {}.type
         return gson.fromJson(data, typeToken)
+
     }
+
     fun logout(){
         edit.putString(userKEY, "").apply()
     }
@@ -46,6 +48,28 @@ class SharedPrefHelper private constructor(context: Context) {
     }
     fun getRememberMe(): String? {
         return shared.getString(rememberMeKEY, null)
+    }
+    fun setUserImage(user: User, url: String) {
+        val type = object : TypeToken<List<User>>() {}.type
+        val gson = Gson()
+
+        val userList: MutableList<User>
+        val str = shared.getString("Users", "")
+
+        if (str == "") {
+            userList = mutableListOf()
+        } else {
+            userList = gson.fromJson(str, type)
+        }
+        for (i in userList) {
+            if (i.fullname == user.fullname) {
+                userList.remove(i)
+                userList.add(user)
+            }
+        }
+
+        val edited = gson.toJson(userList)
+        edit.putString("Users", edited).apply()
     }
 
 

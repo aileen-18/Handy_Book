@@ -129,6 +129,10 @@ class MainFragment : Fragment(),NavigationView.OnNavigationItemSelectedListener 
             }
         }
 
+        binding.avatar.setOnClickListener {
+            findNavController().navigate(R.id.action_mainFragment_to_personalFragment)
+        }
+
         return binding.root
     }
 
@@ -165,11 +169,14 @@ class MainFragment : Fragment(),NavigationView.OnNavigationItemSelectedListener 
                 bottomMenu.selectedItemId = R.id.search
             }
 
-//            R.id.nav_logout -> findNavController().navigate(R.id.action_main_to_splash)
+
         }
         drawerLayout!!.closeDrawer(GravityCompat.START)
+
+
         return true
     }
+
 
     companion object {
         /**

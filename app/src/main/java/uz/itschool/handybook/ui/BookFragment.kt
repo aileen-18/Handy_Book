@@ -60,6 +60,9 @@ class BookFragment : Fragment() {
             binding.AudioBook.setBackgroundResource(R.drawable.back_choose_dark_blue)
             binding.EBook.setBackgroundColor(Color.TRANSPARENT)
         }
+//        binding.reading.setOnClickListener {
+//            findNavController().navigate(R.id.action_mainFragment_to_readingFragment)
+//        }
 
 
 
