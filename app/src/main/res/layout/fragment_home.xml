@@ -7,16 +7,32 @@
     tools:context=".ui.HomeFragment">
 
     <ScrollView
-        android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-    >
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/category_item"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+            </androidx.recyclerview.widget.RecyclerView>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/home_main_book_container"
@@ -92,32 +108,43 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.cardview.widget.CardView
-                    android:layout_marginVertical="4dp"
-                    app:cardElevation="6dp"
                     android:layout_width="wrap_content"
                     android:layout_height="220dp"
-                    app:cardCornerRadius="22dp"
+                    android:layout_marginVertical="4dp"
                     android:layout_marginEnd="25dp"
+                    android:rotation="10"
                     android:src="@drawable/dunyoning_ishlari"
+                    app:cardCornerRadius="22dp"
+                    app:cardElevation="6dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:rotation="10">
+                    app:layout_constraintTop_toTopOf="parent">
+
                     <ImageView
                         android:id="@+id/home_main_book_image"
-                        android:adjustViewBounds="true"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:adjustViewBounds="true"
 
-                        android:src="@drawable/dunyoning_ishlari"/>
+                        android:src="@drawable/dunyoning_ishlari" />
                 </androidx.cardview.widget.CardView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/home_all_recycler"
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/home_nothing_found"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:src="@drawable/nothing_found"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_all_books"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/book_item"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="2"
+                android:orientation="vertical"
+                />
 
 
         </androidx.appcompat.widget.LinearLayoutCompat>

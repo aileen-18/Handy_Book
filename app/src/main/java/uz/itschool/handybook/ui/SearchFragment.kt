@@ -1,11 +1,24 @@
 package uz.itschool.handybook.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.SearchView.OnQueryTextListener
+import androidx.navigation.fragment.findNavController
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import uz.itschool.handybook.R
+import uz.itschool.handybook.adapter.BooksAdapter
+import uz.itschool.handybook.api.APIClient
+import uz.itschool.handybook.api.APIService
+import uz.itschool.handybook.databinding.FragmentSearchBinding
+import uz.itschool.handybook.model.Book
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +34,7 @@ class SearchFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    var searchLast = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,9 +48,51 @@ class SearchFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search, container, false)
+       val binding = FragmentSearchBinding.inflate(inflater, container,false)
+
+        val api = APIClient.getInstance().create(APIService::class.java)
+        // Search products
+        binding.searchView.setOnQueryTextListener(object : OnQueryTextListener {
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText == searchLast) return false
+
+                api.searchByName(newText!!).enqueue(object : Callback<List<Book>>{
+                    override fun onResponse(
+                        call: Call<List<Book>>,
+                        response: Response<List<Book>>
+                    ) {
+                        val books = response.body()!!
+                        binding.rvAllBooks.adapter = BooksAdapter(books,object : BooksAdapter.BookCLicked {
+                            override fun OnClick(book: Book) {
+                                val bundle = Bundle()
+                                bundle.putSerializable("book", book)
+                                findNavController().navigate(
+                                    R.id.action_mainFragment_to_bookFragment,
+                                    bundle)
+                            }
+                        })
+
+                    }
+
+                    override fun onFailure(call: Call<List<Book>>, t: Throwable) {
+                        Log.d("TAG", "$t")
+                    }
+
+                })
+                searchLast = newText
+
+                return true
+            }
+
+            override fun onQueryTextSubmit(newText: String?): Boolean {
+                return true
+            }
+
+        })
+
+        return binding.root
     }
+
 
     companion object {
         /**

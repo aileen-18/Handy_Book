@@ -6,6 +6,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
 import uz.itschool.handybook.model.Book
+import uz.itschool.handybook.model.Category
 import uz.itschool.handybook.model.Comment
 import uz.itschool.handybook.model.SignIn
 import uz.itschool.handybook.model.SignUp
@@ -21,6 +22,10 @@ interface APIService {
 
     @GET("/book-api/main-book")
     fun getMainBook():Call<Book>
+
+    @GET("/book-api/all-category")
+    fun getCategories():Call<List<Category>>
+
     @GET("/book-api/category")
     fun getBookByCategory(@Query("name") name:String):Call<List<Book>>
 
@@ -28,7 +33,7 @@ interface APIService {
     fun getComments(@Query("id") id: Int):Call<List<Comment>>
 
     @GET("/book-api/search-name")
-    fun search(@Query("name") name: String):Call<List<Book>>
+    fun searchByName(@Query("name") name: String):Call<List<Book>>
 
     @POST("/book-api/register")
     fun signup(@Body signUp: SignUp): Call<User>
