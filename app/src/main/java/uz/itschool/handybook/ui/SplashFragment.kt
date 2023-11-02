@@ -45,7 +45,7 @@ class SplashFragment : Fragment() {
             val shared = SharedPrefHelper.getInstance(requireContext())
             if (shared.getUser() == null) findNavController().navigate(R.id.action_splashFragment_to_registrationFragment)
             else findNavController().navigate(R.id.action_splashFragment_to_mainFragment)
-        }, 4000)
+        }, 3000)
 
         return binding.root
     }

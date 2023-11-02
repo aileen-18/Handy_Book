@@ -1,11 +1,17 @@
 package uz.itschool.handybook.ui
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.findNavController
+import coil.load
 import uz.itschool.handybook.R
+import uz.itschool.handybook.databinding.FragmentBookBinding
+import uz.itschool.handybook.model.Book
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,8 +40,22 @@ class BookFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_book, container, false)
+      val binding = FragmentBookBinding.inflate(inflater,container,false)
+
+        val activity: AppCompatActivity = activity as AppCompatActivity
+
+        var book = arguments?.getSerializable("book") as Book
+        binding.desc.text = book!!.description
+        binding.name.text = book!!.name
+        binding.image.load(book.image)
+
+        binding.back.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+
+
+        return binding.root
     }
 
     companion object {

@@ -20,9 +20,8 @@ class BooksAdapter(var books : List<Book>, private val bookclicked: BookCLicked)
         val audio: ImageView = itemView.findViewById(R.id.book_item_audio)
         val author: TextView = itemView.findViewById(R.id.book_author)
         val rating: TextView = itemView.findViewById(R.id.book_rate)
-        val imageIV: ImageView = itemView.findViewById(R.id.book_img)
+        val image: ImageView = itemView.findViewById(R.id.book_img)
         val bookmarkIV: ImageView = itemView.findViewById(R.id.book_saved_icon)
-        val bookMarkCV: CardView = itemView.findViewById(R.id.book_item_bookmark_cardview)
 
 
     }
@@ -38,9 +37,8 @@ class BooksAdapter(var books : List<Book>, private val bookclicked: BookCLicked)
     override fun onBindViewHolder(holder: BookHolder, position: Int) {
         val book = books[position]
         holder.title.text = book.name
-        if (book.audio == null) holder.audio.visibility = View.GONE
         holder.author.text = book.author
-        holder.imageIV.load(book.image)
+        holder.image.load(book.image)
         holder.rating.text = book.reyting.toString()
         holder.bookmarkIV.setOnClickListener {
 

@@ -49,6 +49,7 @@ class HomeFragment : Fragment() {
     private lateinit var adapter: BooksAdapter
     private var allBooks = listOf<Book>()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -63,10 +64,12 @@ class HomeFragment : Fragment() {
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        binding.rvAllBooks.layoutManager =
-            GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
 
-        binding.rvAllBooks.setHasFixedSize(true)
+
+
+
+
+
         shared = SharedPrefHelper.getInstance(requireContext())
         adapter = BooksAdapter(listOf(), object:BooksAdapter.BookCLicked{
             override fun OnClick(book: Book) {
@@ -80,13 +83,13 @@ class HomeFragment : Fragment() {
 
 
 
-        getAllBooks()
+       getAllBooks()
         setMainBook()
-       // SetCategory()
+        SetCategory(requireContext())
         return binding.root
     }
 
-    private fun SetCategory() {
+    private fun SetCategory(context: Context) {
         binding.rvCategory.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         api.getCategories().enqueue(object : Callback<List<Category>>{
             override fun onResponse(
@@ -95,14 +98,10 @@ class HomeFragment : Fragment() {
             ) {
                 if (!response.isSuccessful) return
                 val categories = response.body()!!
-                binding.rvCategory.adapter = CategoryAdapter(categories,requireContext(),
+                binding.rvCategory.adapter = CategoryAdapter(categories,context,
                   object:CategoryAdapter.CategoryClicked{
-                        override fun onClick(category: String?) {
-                            if (category == null){
-                                setAllBooks(allBooks)
-                                return
-                            }
-                            setCategoryChanger(category)
+                        override fun onClick(category: String) {
+
                         }
 
                     })
@@ -146,14 +145,12 @@ class HomeFragment : Fragment() {
 
         })
     }
-    @SuppressLint("NotifyDataSetChanged")
+
     private fun getAllBooks(){
         api.getBooks().enqueue(object : Callback<List<Book>>{
             override fun onResponse(call: Call<List<Book>>, response: Response<List<Book>>) {
                 val books = response.body()!!
                 Log.d(TAG, "onResponse: $books")
-                allBooks = books
-                adapter.notifyDataSetChanged()
 
                 binding.rvAllBooks.adapter = BooksAdapter(books, object:BooksAdapter.BookCLicked{
                     override fun OnClick(book: Book) {
@@ -166,7 +163,7 @@ class HomeFragment : Fragment() {
                     }
 
                 })
-
+                binding.rvAllBooks.setHasFixedSize(true)
             }
 
             override fun onFailure(call: Call<List<Book>>, t: Throwable) {
@@ -184,7 +181,7 @@ class HomeFragment : Fragment() {
             setAllBooks(books: List<Book>) {
         adapter.books = books
         adapter.notifyDataSetChanged()
-        binding.homeNothingFound.visibility = if (books.isEmpty()) View.VISIBLE else View.GONE
+
     }
 
 

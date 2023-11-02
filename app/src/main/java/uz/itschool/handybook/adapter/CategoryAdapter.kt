@@ -46,7 +46,7 @@ private val onClick: CategoryClicked
                 notifyItemChanged(current)
                 current = position
                 notifyItemChanged(current)
-                if (position == 0) onClick.onClick(null)
+                if (position == 0) onClick.onClick("")
                 else onClick.onClick(categories[position - 1].type_name)
             }
 
@@ -60,7 +60,7 @@ private val onClick: CategoryClicked
 
 
     interface CategoryClicked {
-        fun onClick(category: String?)
+        fun onClick(category: String)
     }
     }
 
