@@ -36,12 +36,15 @@ class BooksAdapter(var books : List<Book>, private val bookclicked: BookCLicked)
 
     override fun onBindViewHolder(holder: BookHolder, position: Int) {
         val book = books[position]
+        var state= true
         holder.title.text = book.name
         holder.author.text = book.author
         holder.image.load(book.image)
         holder.rating.text = book.reyting.toString()
         holder.bookmarkIV.setOnClickListener {
-
+            if (books.contains(book)){
+                holder.bookmarkIV.setImageResource(R.drawable.saved_filled)
+            }
         }
         holder.itemView.setOnClickListener {
             bookclicked.OnClick(book)

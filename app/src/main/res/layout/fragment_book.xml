@@ -134,6 +134,7 @@
                 android:elevation="10dp"
                 android:fontFamily="@font/montserrat_semi_bold"
                 android:text="O'tkan kunlar"
+                android:textStyle="bold"
                 android:textColor="@color/dark_blue"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toTopOf="@+id/author"
@@ -151,7 +152,7 @@
                 android:elevation="10dp"
                 android:fontFamily="@font/montserrat_regular"
                 android:text="Abdulla Qodiriy"
-                android:textColor="@color/grey"
+                android:textColor="@color/dark_blue"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="@+id/name"
                 app:layout_constraintStart_toStartOf="@+id/name"
@@ -162,26 +163,23 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginTop="15dp"
                 android:fontFamily="@font/montserrat_regular"
                 android:text="@string/text_more"
                 android:textColor="@color/blue"
                 android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/author" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+                app:layout_constraintTop_toBottomOf="@+id/author" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="end"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/desc">
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/oqish"
@@ -211,4 +209,6 @@
             android:src="@drawable/feather"
             app:tint="@color/dark_blue" />
     </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

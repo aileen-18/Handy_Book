@@ -1,6 +1,7 @@
 package uz.itschool.handybook.ui
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -42,15 +43,22 @@ class BookFragment : Fragment() {
     ): View? {
       val binding = FragmentBookBinding.inflate(inflater,container,false)
 
-        val activity: AppCompatActivity = activity as AppCompatActivity
 
         var book = arguments?.getSerializable("book") as Book
-        binding.desc.text = book!!.description
-        binding.name.text = book!!.name
+        binding.desc.text = book.description
+        binding.name.text = book.name
         binding.image.load(book.image)
 
         binding.back.setOnClickListener {
             findNavController().popBackStack()
+        }
+        binding.EBook.setOnClickListener {
+            binding.EBook.setBackgroundResource(R.drawable.back_choose_dark_blue)
+            binding.AudioBook.setBackgroundColor(Color.TRANSPARENT)
+        }
+        binding.AudioBook.setOnClickListener {
+            binding.AudioBook.setBackgroundResource(R.drawable.back_choose_dark_blue)
+            binding.EBook.setBackgroundColor(Color.TRANSPARENT)
         }
 
 
