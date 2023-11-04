@@ -5,6 +5,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
+import uz.itschool.handybook.model.AddComment
 import uz.itschool.handybook.model.Book
 import uz.itschool.handybook.model.Category
 import uz.itschool.handybook.model.Comment
@@ -30,7 +31,10 @@ interface APIService {
     fun getBookByCategory(@Query("name") name:String):Call<List<Book>>
 
     @GET("/book-api/comment")
-    fun getComments(@Query("id") id: Int):Call<List<Comment>>
+    fun getBookComment(@Query("id") id: Int):Call<List<Comment>>
+
+    @POST("/comment-api/create")
+    fun addComment(@Body comment: AddComment) : Call<AddComment>
 
     @GET("/book-api/search-name")
     fun searchByName(@Query("name") name: String):Call<List<Book>>

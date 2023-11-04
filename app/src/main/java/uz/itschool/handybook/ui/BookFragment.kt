@@ -45,7 +45,6 @@ class BookFragment : Fragment() {
 
 
         var book = arguments?.getSerializable("book") as Book
-        binding.desc.text = book.description
         binding.name.text = book.name
         binding.image.load(book.image)
 
@@ -60,9 +59,16 @@ class BookFragment : Fragment() {
             binding.AudioBook.setBackgroundResource(R.drawable.back_choose_dark_blue)
             binding.EBook.setBackgroundColor(Color.TRANSPARENT)
         }
+        binding.tavsifItem.setOnClickListener {
+            parentFragmentManager.beginTransaction().add(R.id.viewPager, TavsifFragment()).commit()
+        }
+        binding.commentItem.setOnClickListener {
+            parentFragmentManager.beginTransaction().replace(R.id.viewPager, CommentFragment()).commit()
+        }
 //        binding.reading.setOnClickListener {
 //            findNavController().navigate(R.id.action_mainFragment_to_readingFragment)
 //        }
+
 
 
 
